@@ -4,16 +4,16 @@ import injectHTML from 'vite-plugin-html-inject';
 import FullReload from 'vite-plugin-full-reload';
 
 export default defineConfig({
-  root: 'src',
+  root: 'src', 
   build: {
-    outDir: '../dist',
+    outDir: '../dist', 
     emptyOutDir: true, 
     sourcemap: true,
     rollupOptions: {
-    
-      input: sync('./src/*.html'),
-      output: {
       
+      input: sync('./src/*.html'), 
+      
+      output: {
         assetFileNames: 'assets/[name]-[hash][extname]',
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: '[name].js',
@@ -24,5 +24,4 @@ export default defineConfig({
     injectHTML(),
     FullReload(['./src/**/**.html']),
   ],
-
 });
