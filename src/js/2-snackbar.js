@@ -1,4 +1,4 @@
-// Імпорт бібліотек (правильний шлях для Vite)
+
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
@@ -10,7 +10,7 @@ form.addEventListener('submit', event => {
   const delay = Number(event.currentTarget.elements.delay.value);
   const state = event.currentTarget.elements.state.value;
 
-  // Створення промісу
+
   createPromise(delay, state)
     .then(delay => {
       iziToast.success({

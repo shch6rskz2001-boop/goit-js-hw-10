@@ -17,7 +17,7 @@
 @import url('./back-link.css');
 @import url('./footer.css');
 
-/* Загальні стилі для всього проекту */
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -58,7 +58,7 @@ body {
   text-decoration: underline;
 }
 
-/* Таймер */
+
 .timer {
   display: flex;
   justify-content: space-around;
@@ -83,7 +83,7 @@ body {
   color: #666;
 }
 
-/* Кнопки та інпут */
+
 input[type="text"],
 input[type="number"] {
   padding: 10px;
@@ -114,7 +114,7 @@ button:hover:not(:disabled) {
   background-color: #0056b3;
 }
 
-/* Форма генератора промісів */
+
 form.form {
   display: flex;
   flex-direction: column;
@@ -144,8 +144,17 @@ form.form button {
   align-self: flex-start;
 }
 
-/* Відступ між елементами форми */
+
 form.form input[type="number"],
 form.form input[type="radio"] {
   margin-right: 5px;
+}
+
+.timer .field {
+  background-color: #fff;
+  padding: 10px 15px;
+  border-radius: 5px;
+  min-width: 80px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
 }

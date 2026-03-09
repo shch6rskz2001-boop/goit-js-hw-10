@@ -3,7 +3,6 @@ import "flatpickr/dist/flatpickr.min.css";
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
-// Референси до DOM
 const refs = {
   input: document.querySelector("#datetime-picker"),
   startBtn: document.querySelector("[data-start]"),
@@ -16,10 +15,10 @@ const refs = {
 let selectedDate = null;
 let timerId = null;
 
-// Кнопка старт спочатку неактивна
+
 refs.startBtn.disabled = true;
 
-// Ініціалізація flatpickr
+
 flatpickr(refs.input, {
   enableTime: true,
   time_24hr: true,
@@ -46,7 +45,7 @@ flatpickr(refs.input, {
   }
 });
 
-// Обробка кліку по кнопці
+
 refs.startBtn.addEventListener("click", startTimer);
 
 function startTimer() {
@@ -67,7 +66,7 @@ function startTimer() {
   }, 1000);
 }
 
-// Оновлення інтерфейсу таймера
+
 function updateTimer(ms) {
   const { days, hours, minutes, seconds } = convertMs(ms);
 
@@ -77,12 +76,12 @@ function updateTimer(ms) {
   refs.seconds.textContent = addLeadingZero(seconds);
 }
 
-// Додаємо провідний нуль, якщо < 10
+
 function addLeadingZero(value) {
   return String(value).padStart(2, "0");
 }
 
-// Функція конвертації мс у дні, години, хвилини, секунди
+
 function convertMs(ms) {
   const second = 1000;
   const minute = second * 60;
