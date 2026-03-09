@@ -7,7 +7,7 @@ export default defineConfig(({ command }) => {
   return {
     root: 'src',
     build: {
-      sourcemap: true,git git add .
+      sourcemap: true,
       outDir: '../dist',
       rollupOptions: {
         // Всі HTML-файли як точки входу
