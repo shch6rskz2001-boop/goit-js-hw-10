@@ -1,37 +1,42 @@
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
-const form = document.querySelector(".form");
+const form = document.querySelector('.form');
 
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
+function delayPromise(delay, radioChecked) {
+    const data = { delay, radioChecked };
 
-  const delay = Number(e.target.elements.delay.value);
-  const state = e.target.elements.state.value;
-
-  // створюємо проміс
-  const promise = new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (state === "fulfilled") {
-        resolve(delay);
-      } else {
-        reject(delay);
-      }
-    }, delay);
-  });
-
-  // обробка проміса
-  promise
-    .then((delay) => {
-      iziToast.success({
-        message: `✅ Fulfilled promise in ${delay}ms`,
-        position: "topRight"
-      });
-    })
-    .catch((delay) => {
-      iziToast.error({
-        message: `❌ Rejected promise in ${delay}ms`,
-        position: "topRight"
-      });
+    return new Promise((res, rej) => {
+        setTimeout(() => {
+            if (radioChecked === 'fulfilled') {
+                res(data);
+            } else {
+                rej(data);
+            }
+        }, delay);
     });
-});
+}
+
+form.addEventListener('submit', onSubmitBtnClick);
+ function onSubmitBtnClick(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const delay = Number(form.elements.delay.value);
+    const radioChecked = form.elements.state.value;
+
+    delayPromise(delay, radioChecked)
+        .then(({ delay }) => {
+            iziToast.success({
+                title: 'OK',
+                message: `✅ Fulfilled promise in ${delay} ms`,
+            });
+        })
+        .catch(({ delay }) => {
+            iziToast.error({
+                title: 'Error',
+                message: `❌ Rejected promise in ${delay} ms`,
+            });
+        });
+    form.reset();
+}
