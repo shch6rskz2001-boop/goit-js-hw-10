@@ -1,48 +1,39 @@
 import { defineConfig } from 'vite';
-import { glob } from 'glob';
+import glob from 'glob';
 import injectHTML from 'vite-plugin-html-inject';
 import FullReload from 'vite-plugin-full-reload';
-import SortCss from 'postcss-sort-media-queries';
 
 export default defineConfig(({ command }) => {
   return {
-    define: {
-      [command === 'serve' ? 'global' : '_global']: {},
-    },
     root: 'src',
     build: {
       sourcemap: true,
+      outDir: '../dist',
       rollupOptions: {
+        // Всі HTML-файли як точки входу
         input: glob.sync('./src/*.html'),
         output: {
+          // Винесення node_modules у окремий чанк
           manualChunks(id) {
             if (id.includes('node_modules')) {
               return 'vendor';
             }
           },
-          entryFileNames: chunkInfo => {
-            if (chunkInfo.name === 'commonHelpers') {
-              return 'commonHelpers.js';
-            }
-            return '[name].js';
-          },
-          assetFileNames: assetInfo => {
-            if (assetInfo.name && assetInfo.name.endsWith('.html')) {
-              return '[name].[ext]';
-            }
-            return 'assets/[name]-[hash][extname]';
-          },
+          // Індивідуальні файли JS
+          entryFileNames: '[name].js',
         },
       },
-      outDir: '../dist',
-      emptyOutDir: true,
     },
     plugins: [
       injectHTML(),
       FullReload(['./src/**/**.html']),
-      SortCss({
-        sort: 'mobile-first',
-      }),
     ],
+    resolve: {
+      // Це допомагає Vite знаходити node_modules при імпорті flatpickr / izitoast
+      alias: {
+        flatpickr: 'flatpickr/dist/flatpickr.js',
+        izitoast: 'izitoast/dist/js/iziToast.js',
+      },
+    },
   };
 });

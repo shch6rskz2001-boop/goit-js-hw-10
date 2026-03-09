@@ -1,75 +1,88 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
-
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
-// елементи інтерфейсу
-const startBtn = document.querySelector("[data-start]");
-const input = document.querySelector("#datetime-picker");
+// Референси до DOM
+const refs = {
+  input: document.querySelector("#datetime-picker"),
+  startBtn: document.querySelector("[data-start]"),
+  days: document.querySelector("[data-days]"),
+  hours: document.querySelector("[data-hours]"),
+  minutes: document.querySelector("[data-minutes]"),
+  seconds: document.querySelector("[data-seconds]")
+};
 
-const daysEl = document.querySelector("[data-days]");
-const hoursEl = document.querySelector("[data-hours]");
-const minutesEl = document.querySelector("[data-minutes]");
-const secondsEl = document.querySelector("[data-seconds]");
-
-let userSelectedDate = null;
+let selectedDate = null;
 let timerId = null;
 
-// кнопка спочатку неактивна
-startBtn.disabled = true;
+// Кнопка старт спочатку неактивна
+refs.startBtn.disabled = true;
 
-// Налаштування flatpickr
-flatpickr(input, {
+// Ініціалізація flatpickr
+flatpickr(refs.input, {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    const selectedDate = selectedDates[0];
+    selectedDate = selectedDates[0];
 
     if (selectedDate <= new Date()) {
-      iziToast.error({
-        message: "Please choose a date in the future",
-        position: "topRight"
-      });
-      startBtn.disabled = true;
-      return;
-    }
+      refs.startBtn.disabled = true;
 
-    userSelectedDate = selectedDate;
-    startBtn.disabled = false;
+      iziToast.error({
+        title: "Error",
+        message: "Please choose a date in the future"
+      });
+    } else {
+      refs.startBtn.disabled = false;
+
+      iziToast.success({
+        title: "OK",
+        message: 'You can press "Start"!'
+      });
+    }
   }
 });
 
-// запуск таймера
-startBtn.addEventListener("click", () => {
-  startBtn.disabled = true;
-  input.disabled = true;
+// Обробка кліку по кнопці
+refs.startBtn.addEventListener("click", startTimer);
+
+function startTimer() {
+  refs.startBtn.disabled = true;
+  refs.input.disabled = true;
 
   timerId = setInterval(() => {
-    const diff = userSelectedDate - new Date();
+    const timeDiff = selectedDate - new Date();
 
-    if (diff <= 0) {
+    if (timeDiff <= 0) {
       clearInterval(timerId);
-      updateTimer({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-      input.disabled = false;
+      updateTimer(0);
+      refs.input.disabled = false;
       return;
     }
 
-    updateTimer(convertMs(diff));
+    updateTimer(timeDiff);
   }, 1000);
-});
-
-// оновлення UI
-function updateTimer({ days, hours, minutes, seconds }) {
-  daysEl.textContent = String(days).padStart(2, "0");
-  hoursEl.textContent = String(hours).padStart(2, "0");
-  minutesEl.textContent = String(minutes).padStart(2, "0");
-  secondsEl.textContent = String(seconds).padStart(2, "0");
 }
 
-// функція для перетворення мілісекунд
+// Оновлення інтерфейсу таймера
+function updateTimer(ms) {
+  const { days, hours, minutes, seconds } = convertMs(ms);
+
+  refs.days.textContent = addLeadingZero(days);
+  refs.hours.textContent = addLeadingZero(hours);
+  refs.minutes.textContent = addLeadingZero(minutes);
+  refs.seconds.textContent = addLeadingZero(seconds);
+}
+
+// Додаємо провідний нуль, якщо < 10
+function addLeadingZero(value) {
+  return String(value).padStart(2, "0");
+}
+
+// Функція конвертації мс у дні, години, хвилини, секунди
 function convertMs(ms) {
   const second = 1000;
   const minute = second * 60;

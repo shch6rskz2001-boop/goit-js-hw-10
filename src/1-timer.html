@@ -2,52 +2,51 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Timer</title>
-    <link rel="stylesheet" href="./css/styles.css" />
-    <!-- бібліотеки -->
+    <title>Promise generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+
     <link
       rel="stylesheet"
-      href="node_modules/flatpickr/dist/flatpickr.min.css"
+      href="https://cdn.jsdelivr.net/npm/modern-normalize@2.0.0/modern-normalize.min.css"
     />
-    <link
-      rel="stylesheet"
-      href="node_modules/izitoast/dist/css/iziToast.min.css"
-    />
+
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/snackbar.css" />
   </head>
   <body>
-    <main>
-      <div class="container">
-        <h1 class="main-title">Timer</h1>
-        <a class="back-link" href="./index.html">Go back</a>
-      </div>
+    <div class="btn-container">
+      <p>
+        <a class="btn" href="index.html">Go back</a>
+      </p>
+    </div>
 
-      <!-- Поле вибору дати -->
-      <input type="text" id="datetime-picker" />
-      <button type="button" data-start disabled>Start</button>
+    <div class="thumb-block">
+      <form class="form">
+        <label class="label-delay">
+          Delay (ms) <br />
+          <input type="number" name="delay" required />
+        </label>
+        <fieldset class="frame">
+          <legend class="legend">State</legend>
+          <label class="label-radio">
+            <input type="radio" name="state" value="fulfilled" required />
+            <span>Fulfilled</span>
+          </label>
+          <label class="label-radio">
+            <input type="radio" name="state" value="rejected" required />
+            <span>Rejected</span>
+          </label>
+        </fieldset>
+        <button class="btn-start" type="submit">Create notification</button>
+      </form>
+    </div>
 
-      <!-- Таймер -->
-      <div class="timer">
-        <div class="field">
-          <span class="value" data-days>00</span>
-          <span class="label">Days</span>
-        </div>
-        <div class="field">
-          <span class="value" data-hours>00</span>
-          <span class="label">Hours</span>
-        </div>
-        <div class="field">
-          <span class="value" data-minutes>00</span>
-          <span class="label">Minutes</span>
-        </div>
-        <div class="field">
-          <span class="value" data-seconds>00</span>
-          <span class="label">Seconds</span>
-        </div>
-      </div>
-    </main>
-
-    <script type="module" src="./js/1-timer.js"></script>
+    <script src="js/02-snackbar.js" type="module"></script>
   </body>
 </html>
